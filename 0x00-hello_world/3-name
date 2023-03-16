@@ -1,0 +1,2 @@
+#!/bin/bash
+cfile.c=$CFILE gcc -o cfile.c
