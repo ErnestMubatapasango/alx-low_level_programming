@@ -1,2 +1,2 @@
 #!/bin/bash
-main.c=$CFILE | $CFILE -o main.o
+$CFILE=main.c -o main.o
