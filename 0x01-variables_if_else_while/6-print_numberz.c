@@ -1,19 +1,16 @@
 #include <stdio.h>
-
 /**
- * main - A programm that prints a line wiith puts function
+ * main - prints all single digit numbers of base
  *
- * Return: (0) (Success)
+ * Return: Always 0 (Success)
  */
+
 int main(void)
 {
-	int a;
+	int n;
 
-	for (a = 0; a < 10; a++)
-	{
-		putchar('a');
-		a++;
-	}
+	for (n = 48; n < 58; n++)
+		putchar(n);
 	putchar('\n');
 	return (0);
 }
