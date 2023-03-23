@@ -32,6 +32,10 @@ int main(void)
 		{
 			printf("%i", i);
 		}
+		if (i < 100)
+		{
+			printf("_");
+		}
 	}
 	printf("\n");
 	return (0);
