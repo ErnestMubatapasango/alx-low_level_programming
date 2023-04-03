@@ -19,7 +19,8 @@ int i;
 
 for (i = 0; i < n; i++)
 {
-*ptr++ = b;
+*ptr[i] = b;
+i++;
 }
 return (s);
 }
