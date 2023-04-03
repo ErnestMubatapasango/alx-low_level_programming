@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "main.h"
 
 /**
@@ -17,7 +16,7 @@ void print_chessboard(char (*a)[8])
 		{
 			_putchar(a[row][col]);
 		}
-	_putchar("\n");
+	_putchar('\n');
 	}
 }
 
