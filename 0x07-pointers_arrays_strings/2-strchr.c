@@ -1,4 +1,5 @@
-#include "maim.h"
+#include "main.h"
+
 /**
  * _strchr - locates a character in a string
  *
@@ -16,12 +17,14 @@ if (*s == c)
 {
 return (s);
 }
+else
+{
 s++;
 }
-if (c == '\0')
+}
+if (*s == c)
 {
 return (s);
 }
 return (NULL);
 }
-
