@@ -6,13 +6,15 @@
  */
 void _puts_recursion(char *s)
 {
-	s[20] = "What is up";
-	int i;
-
-	for (i = 0; i < s; i++)
+	if (s == '\0')
 	{
-		_putchar([i]);
-		_puts_recursion(i);
+		_putchar('\n');
+		return;
 	}
-	_putchar('\n');
+	else
+	{
+		-putchar(*s);
+		_puts_recursion(s + 1);
+	}
+
 }
