@@ -14,11 +14,8 @@
  */
 char *_memset(char *s, char b, unsigned int n)
 {
-<<<<<<< HEAD
 
-=======
->>>>>>> 8d9fb636f0da1cfbc13dee7c7c243d2451477211
-unsigned int i;
+	unsigned int i;
 
 for (i = 0; i < n; i++)
 {
