@@ -10,13 +10,13 @@
  */
 int str_checker(char *s1, char *s2, int a, int b)
 {
-	if (s1[i] == '\0' && s2[j] == '\0')
+	if (s1[a] == '\0' && s2[b] == '\0')
 		return (1);
-	if (s1[i] == s2[j])
+	if (s1[a] == s2[b])
 		return (str_checker(s1, s2, a + 1, b + 1));
-	if (s1[i] == '\0' && s2[j] == '*')
+	if (s1[a] == '\0' && s2[b] == '*')
 		return (str_checker(s1, s2, a, b + 1));
-	if (s2[j] == '*')
+	if (s2[b] == '*')
 		return (str_checker(s1, s2, a + 1, b) || str_checker(s1, s2, a, b + 1));
 	return (0);
 }
