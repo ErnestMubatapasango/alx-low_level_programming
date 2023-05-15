@@ -12,7 +12,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #define BUFFER_SIZE 1024
-
+#define ARGS_SIZE 64
 size_t _strlen(char *a);
 
 #endif
