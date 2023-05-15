@@ -11,6 +11,8 @@
 #include <dirent.h>
 #include <signal.h>
 #include <sys/wait.h>
+#define BUFFER_SIZE 1024
+
 size_t _strlen(char *a);
 
 #endif
