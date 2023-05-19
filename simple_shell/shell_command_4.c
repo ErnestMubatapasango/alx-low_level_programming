@@ -39,8 +39,9 @@ perror("execvp error");
 exit(EXIT_FAILURE);
 }
 /**
- * is_exit_input - tokenize
+ * is_exit_input -  tokenize
  * @user_input: input given by the user
+ * Return: value
  */
 int is_exit_input(char *user_input)
 {
@@ -55,6 +56,7 @@ return (user_input[i] == '\0' && exit_input[i] == '\0');
 /**
  * is_env_input - tokenize
  * @user_input: input given by the user
+ * Return: value
  */
 int is_env_input(char *user_input)
 {
