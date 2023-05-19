@@ -41,6 +41,24 @@ perror("execvp error");
 exit(EXIT_FAILURE);
 }
 /**
+ * is_exit_user_input -  tokenize
+ * @user_input: input given by the user
+ */
+int is_exit_user_input(char *user_input)
+{
+size_t i = 0;
+const char exit_user_input[] = "exit";
+while (user_input[i] && exit_user_input[i])
+{
+if (user_input[i] != exit_user_input[i])
+{
+return (0);
+}
+i++;
+}
+return user_input[i] == '\0' && exit_user_input[i] == '\0';
+}
+/**
  * handle_exit - Prints a prompt to the standard output
  */
 void handle_exit(void)
@@ -82,7 +100,7 @@ if (command_exists == -1)
 perror("command does not exist");
 continue;
 }
-if (is_exit_command(input_buffer))
+if (is_exit_user_input(input_buffer))
 {
 handle_exit();
 }
