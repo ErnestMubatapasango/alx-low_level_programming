@@ -11,7 +11,6 @@ int read_user_input(int fe, char *line)
 {
 int pos = 0;
 char c;
-
 while (pos < BUFFER_SIZE - 1 && read(fe, &c, 1) > 0)
 {
 if (c == '\n')
@@ -21,7 +20,6 @@ return (1);
 }
 line[pos++] = c;
 }
-
 line[pos] = '\0';
 return (0);
 }
@@ -43,7 +41,7 @@ if (*line == ' ')
 {
 if (is_arg)
 {
-argw[i][arg_pos] = '\0';
+argv[i][arg_pos] = '\0';
 i++;
 arg_pos = 0;
 is_arg = 0;
@@ -58,10 +56,8 @@ is_arg = 1;
 }
 argw[i][arg_pos++] = *line;
 }
-
 line++;
 }
-
 if (is_arg)
 {
 argw[i][arg_pos] = '\0';
@@ -145,6 +141,16 @@ const char *unsetenv_command = "unsetenv";
 return (compare_strings(command, unsetenv_command));
 }
 /**
+ * is_cd_command -  unset the command environment variable
+ * @command: input given by the user
+ * Return: value
+ */
+int is_cd_command(const char *command)
+{
+const char *cd_command = "cd";
+return (compare_strings(command, cd_command));
+}
+/**
  * execute_exit_user_input -  tokenize
  * @argw: input given by the user
  * @argd: input given by the user
@@ -179,7 +185,6 @@ char error[] = "Usage: setenv VARIABLE VALUE\n";
 write(STDERR_FILENO, error, sizeof(error) - 1);
 return;
 }
-
 if (setenv(argw[1], argw[2], 1) < 0)
 {
 char error[] = "Setenv error\n";
@@ -199,11 +204,77 @@ char error[] = "Usage: unsetenv VARIABLE\n";
 write(STDERR_FILENO, error, sizeof(error) - 1);
 return;
 }
-
 if (unsetenv(argw[1]) < 0)
 {
 char error[] = "Unsetenv error\n";
 write(STDERR_FILENO, error, sizeof(error) - 1);
+}
+}
+/**
+ * execute_cd_command -  unset the command environment variable
+ * @argw: argw
+ * @argd: argd
+ * Return: value
+ */
+void execute_cd_command(char **argw, int argd)
+{
+const char *home_variable = "HOME";
+const char *dash_argument = "-";
+char *directory;
+if (argd == 1)
+{
+directory = getenv(home_variable);
+if (directory == NULL)
+{
+char error[] = "HOME environment variable not set\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
+}
+}
+else if (argd == 2)
+{
+directory = argw[1];
+if (compare_strings(directory, dash_argument))
+{
+directory = getenv("OLDPWD");
+if (directory == NULL)
+{
+char error[] = "OLDPWD environment variable not set\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
+}
+}
+}
+else
+{
+char error[] = "Usage: cd [DIRECTORY|-]\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
+}
+char current_directory[BUFFER_SIZE];
+if (getcwd(current_directory, sizeof(current_directory)) == NULL)
+{
+char error[] = "Getcwd error\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
+}
+if (chdir(directory) < 0)
+{
+char error[] = "Chdir error\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
+}
+if (setenv("PWD", directory, 1) < 0)
+{
+char error[] = "Setenv error\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
+}
+if (setenv("OLDPWD", current_directory, 1) < 0)
+{
+char error[] = "Setenv error\n";
+write(STDERR_FILENO, error, sizeof(error) - 1);
+return;
 }
 }
 /**
@@ -215,24 +286,20 @@ write(STDERR_FILENO, error, sizeof(error) - 1);
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *argw[ARGS_ARGS + 1];
+char *argW[ARGS_ARGS + 1];
 int argd;
-
 while (1)
 {
 char prompt[] = "shell$ ";
 write(STDOUT_FILENO, prompt, sizeof(prompt) - 1);
-
 if (!read_user_input(STDIN_FILENO, line))
 break;
-
 parse_user_input(line, argw, &argd);
-
 if (argd > 0)
 {
 if (is_exit_command(argw[0]))
 {
-execute_exit_user_input(argw, argd);
+execute_exit_command(argw, argd);
 }
 else if (is_setenv_command(argw[0]))
 {
@@ -242,14 +309,18 @@ else if (is_unsetenv_command(argw[0]))
 {
 execute_unsetenv_command(argw, argd);
 }
+else if (is_cd_command(argw[0]))
+{
+execute_cd_command(argw, argd);
+}
 else
 {
 execute_command(argw);
 }
 }
-for (int i = 0; i < argd; i++)
+for (int i = 0; i < argc; i++)
 {
-free(argw[i]);
+free(argv[i]);
 }
 }
 return (0);

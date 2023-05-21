@@ -14,5 +14,13 @@
 #define BUFFER_SIZE 1024
 #define ARGS_SIZE 64
 size_t _strlen(char *a);
+int is_setenv_command(const char *command);
+int is_unsetenv_command(const char *command);
+void execute_exit_user_input(char **argw, int argd);
+void execute_setenv_command(char **argw, int argd);
+void execute_unsetenv_command(char **argw, int argd);
+
+
+
 
 #endif
