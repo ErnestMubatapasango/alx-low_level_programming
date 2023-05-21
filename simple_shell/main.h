@@ -10,9 +10,14 @@
 #include <string.h>
 #include <dirent.h>
 #include <signal.h>
+
 #include <sys/wait.h>
 #define BUFFER_SIZE 1024
 #define ARGS_SIZE 64
+#define ARGS_ALIASES 64
+#define ARGS_ALIAS_LENGTH 128
+
+
 size_t _strlen(char *a);
 int is_setenv_command(const char *command);
 int is_unsetenv_command(const char *command);
