@@ -37,7 +37,7 @@ if (*line == ' ')
 {
 if (is_arg)
 {
-argv[i][arg_pos] = '\0';
+argw[i][arg_pos] = '\0';
 i++;
 arg_pos = 0;
 is_arg = 0;
@@ -47,7 +47,7 @@ else
 {
 if (!is_arg)
 {
-argw[i] = malloc((MAX_ARGS + 1) * sizeof(char));
+argw[i] = malloc((ARGS_SIZE + 1) * sizeof(char));
 if (argw[i] == NULL)
 {
 perror("Allocation error");
@@ -103,8 +103,8 @@ wait(NULL);
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *argw[ARGS_ARGS + 1];
-int argd;
+char *argw[ARGS_SIZE + 1];
+int argd, i;
 
 while (1)
 {
@@ -119,7 +119,7 @@ if (argd > 0)
 {
 execute_user_input(argw);
 }
-for (int i = 0; i < argd; i++)
+for (i = 0; i < argd; i++)
 {
 free(argw[i]);
 }

@@ -4,8 +4,8 @@
  */
 typedef struct
 {
-char name[MAX_ALIAS_LENGTH];
-char value[MAX_ALIAS_LENGTH];
+char name[ARGS_ALIAS_LENGTH];
+char value[ARGS_ALIAS_LENGTH];
 }
 Alias;
 /**
@@ -40,10 +40,10 @@ return (read_size != -1);
  */
 void parse_user_input(char *line, char **argw, int *argd)
 {
-int i = 0;
+int j,i = 0;
 int token_start = -1;
 
-for (int j = 0; line[j] != '\0'; j++)
+for (j = 0; line[j] != '\0'; j++)
 {
 if (line[j] == ' ')
 {
@@ -69,6 +69,44 @@ argw[i] = NULL;
 *argd = i;
 }
 /**
+ * compare_strings -  tokenize
+ * @str1: input given by the user
+ * @str2: local
+ * Return: value
+ */
+int compare_strings(char *str1, char *str2)
+{
+while (*str1 && *str2 && *str1 == *str2)
+{
+str1++;
+str2++;
+}
+
+return (*str1 - *str2);
+}
+/**
+ * copy_strings -  tokenize
+ * @dest: input given by the user
+ * @src: local
+ * Return: value
+ */
+int copy_string(char *dest, char *src)
+{
+int i = 0;
+
+while (*src)
+{
+*dest = *src;
+dest++;
+src++;
+i++;
+}
+
+*dest = '\0';
+
+return (i);
+}
+/**
  * execute_command - parse input
  * @argw: argw
  * @aliases: alias
@@ -77,7 +115,7 @@ argw[i] = NULL;
 void execute_command(char **argw, Alias *aliases, int alias_count)
 {
 pid_t pid = fork();
-
+int i;
 if (pid < 0)
 {
 char error[] = "fork error\n";
@@ -87,17 +125,15 @@ _exit(1);
 }
 else if (pid == 0)
 {
-for (int i = 0; i < alias_count; i++)
+for (i = 0; i < alias_count; i++)
 {
-if (compare_strings(argv[0], aliases[i].name) == 0)
+if (compare_strings(argw[0], aliases[i].name) == 0)
 {
 argw[0] = aliases[i].value;
 break;
 }
 }
-
 execvp(argw[0], argw);
-
 char error[] = "execvp error\n";
 int len = sizeof(error) - 1;
 write(STDERR_FILENO, error, len);
@@ -116,7 +152,8 @@ waitpid(pid, &status, 0);
  */
 void print_aliases(Alias *aliases, int alias_count)
 {
-for (int i = 0; i < alias_count; i++)
+int i;
+for (i = 0; i < alias_count; i++)
 {
 char line[ARGS_ALIAS_LENGTH * 2];
 int len = copy_string(line, aliases[i].name);
@@ -134,7 +171,8 @@ write(STDOUT_FILENO, line, len);
  */
 void print_alias(Alias *aliases, int alias_count, char *name)
 {
-for (int i = 0; i < alias_count; i++)
+int i;
+for (i = 0; i < alias_count; i++)
 {
 if (compare_strings(name, aliases[i].name) == 0)
 {
@@ -157,7 +195,8 @@ return;
  */
 void define_alias(Alias *aliases, int *alias_count, char *name, char *value)
 {
-for (int i = 0; i < *alias_count; i++)
+int i;
+for (i = 0; i < *alias_count; i++)
 {
 if (compare_strings(name, aliases[i].name) == 0)
 {
@@ -179,44 +218,6 @@ copy_string(aliases[*alias_count].value, value);
 (*alias_count)++;
 }
 /**
- * compare_strings -  tokenize
- * @str1: input given by the user
- * @str2: local
- * Return: value
- */
-int compare_strings(char *str1, char *str2)
-{
-while (*str1 && *str2 && *str1 == *str2)
-{
-str1++;
-str2++;
-}
-
-return (*str1 - *str2);
-}
-/**
- * copy_string -  tokenize
- * @dest: input given by the user
- * @src: local
- * Return: value
- */
-int copy_string(char *dest, char *src)
-{
-int i = 0;
-
-while (*src)
-{
-*dest = *src;
-dest++;
-src++;
-i++;
-}
-
-*dest = '\0';
-
-return (i);
-}
-/**
  * main - Entry point
  * Description: Simple shell program that reads commands from standard input
  * and executes them using the execve system call.
@@ -225,11 +226,11 @@ return (i);
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *argw[ARGS_ARGS];
+char *argw[ARGS_SIZE];
 int argd;
 Alias aliases[ARGS_ALIASES];
 int alias_count = 0;
-
+int i;
 while (1)
 {
 write(STDOUT_FILENO, "$ ", 2);
@@ -255,7 +256,7 @@ print_alias(aliases, alias_count, argw[1]);
 }
 else
 {
-for (int i = 1; i < argd; i++)
+for (i = 1; i < argd; i++)
 {
 char *name = argw[i];
 char *value;

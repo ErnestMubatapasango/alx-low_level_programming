@@ -53,7 +53,7 @@ else
 {
 if (!is_arg)
 {
-argw[i] = (char *)malloc((ARGS_ARGS + 1) * sizeof(char));
+argw[i] = (char *)malloc((ARGS_SIZE + 1) * sizeof(char));
 is_arg = 1;
 }
 argw[i][arg_pos++] = *line;
@@ -215,8 +215,8 @@ write(STDERR_FILENO, error, sizeof(error) - 1);
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *argw[ARGS_ARGS + 1];
-int argd;
+char *argw[ARGS_SIZE + 1];
+int argd,i;
 
 while (1)
 {
@@ -247,7 +247,7 @@ else
 execute_command(argw);
 }
 }
-for (int i = 0; i < argd; i++)
+for (i = 0; i < argd; i++)
 {
 free(argw[i]);
 }

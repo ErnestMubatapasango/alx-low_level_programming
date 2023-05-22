@@ -30,11 +30,11 @@ fflush(stdout);
 void execute_user_input(char *user_input)
 {
 
-char *args[ARG_SIZE] = {NULL};
+char *args[ARGS_SIZE] = {NULL};
 int arg_count = 0;
 char *token = strtok(user_input, " ");
 
-while (token && arg_count < ARG_SIZE - 1)
+while (token && arg_count < ARGS_SIZE - 1)
 {
 args[arg_count++] = token;
 token = strtok(NULL, " ");
@@ -57,11 +57,10 @@ int main(void)
 char user_input[BUFFER_SIZE];
 ssize_t xrd;
 pid_t pid;
-
 while (1)
 {
 prompt();
-xrd = read(STDIN_FILENO, command, BUFFER_SIZE);
+xrd = read(STDIN_FILENO, user_input,  BUFFER_SIZE);
 if (xrd == -1)
 {
 perror("read error");

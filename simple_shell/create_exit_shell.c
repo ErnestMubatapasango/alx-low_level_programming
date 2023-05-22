@@ -8,7 +8,7 @@
 int read_user_input(int fe, char *line)
 {
 int pos = 0;
-char c;
+char d;
 while (pos < BUFFER_SIZE - 1 && read(fe, &d, 1) > 0)
 {
 if (d == '\n')
@@ -39,7 +39,7 @@ if (*line == ' ')
 {
 if (is_arg)
 {
-argv[i][arg_pos] = '\0';
+argw[i][arg_pos] = '\0';
 i++;
 arg_pos = 0;
 is_arg = 0;
@@ -49,7 +49,7 @@ else
 {
 if (!is_arg)
 {
-argw[i] = malloc((ARGS_ARGS + 1) * sizeof(char));
+argw[i] = malloc((ARGS_SIZE + 1) * sizeof(char));
 is_arg = 1;
 }
 argw[i][arg_pos++] = *line;
@@ -199,8 +199,8 @@ write(STDERR_FILENO, error, sizeof(error) - 1);
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *argv[ARGS_ARGS + 1];
-int argd;
+char *argw[ARGS_SIZE + 1];
+int argd, i;
 while (1)
 {
 char prompt[] = "shell$ ";
@@ -219,7 +219,7 @@ else
 execute_user_input(argw);
 }
 }
-for (int i = 0; i < argd; i++)
+for (i = 0; i < argd; i++)
 {
 free(argw[i]);
 }

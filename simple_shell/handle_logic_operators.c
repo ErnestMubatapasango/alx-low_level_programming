@@ -31,11 +31,10 @@ return (read_size != -1);
  */
 void parse_user_input(char *line, char **argw, int *argd)
 {
-int i = 0;
-char *token;
+int j, i = 0;
 int token_start = -1;
 
-for (int j = 0; line[j] != '\0'; j++)
+for (j = 0; line[j] != '\0'; j++)
 {
 if (line[j] == ' ')
 {
@@ -100,9 +99,11 @@ waitpid(pid, &status, 0);
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *commands[ARGS_ARGS];
+char *commands[ARGS_SIZE];
 int command_count = 0;
-
+int previous_status = 0;
+int i;
+char *token;
 while (1)
 {
 char prompt[] = "shell$ ";
@@ -112,28 +113,24 @@ write(STDOUT_FILENO, prompt, len);
 if (!read_user_input(STDIN_FILENO, line))
 break;
 
-char *token;
 token = line;
 
-while (*token != '\0' && command_count < ARGS_ARGS)
+while (*token != '\0' && command_count < ARGS_SIZE)
 {
 if (*token == ';')
 {
 *token = '\0';
 commands[command_count++] = line;
-line = token + 1;
+line[] = token + 1;
 }
 token++;
 }
 
 commands[command_count++] = line;
-
-int previous_status = 0;
-
-for (int i = 0; i < command_count; i++)
+for (i = 0; i < command_count; i++)
 {
 char *command = commands[i];
-char *argw[ARGS_ARGS];
+char *argw[ARGS_SIZE];
 int argd;
 
 parse_user_input(command, argw, &argd);
@@ -178,7 +175,6 @@ previous_status = 0;
 
 command_count = 0;
 }
-
 return (0);
 }
 

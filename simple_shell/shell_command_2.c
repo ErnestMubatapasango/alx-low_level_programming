@@ -28,10 +28,10 @@ fflush(stdout);
  */
 void execute_user_input(char *user_input)
 {
-char *args[ARG_SIZE] = {NULL};
+char *args[ARGS_SIZE] = {NULL};
 int arg_count = 0;
 char *token = strtok(user_input, " ");
-while (token && arg_count < ARG_SIZE - 1)
+while (token && arg_count < ARGS_SIZE - 1)
 {
 args[arg_count++] = token;
 token = strtok(NULL, " ");
@@ -54,6 +54,7 @@ char buffer[BUFFER_SIZE];
 ssize_t read_count;
 pid_t child_pid;
 int child_status;
+int command_exists;
 while (1)
 {
 prompt();
@@ -69,7 +70,7 @@ printf("\n");
 break;
 }
 buffer[read_count - 1] = '\0';
-int command_exists = access(buffer, X_OK);
+command_exists = access(buffer, X_OK);
 if (command_exists == -1)
 {
 perror("command does not exist");
@@ -83,7 +84,7 @@ exit(EXIT_FAILURE);
 }
 else if (child_pid == 0)
 {
-execute_command(input_buffer);
+execute_user_input(buffer);
 exit(EXIT_FAILURE);
 }
 else

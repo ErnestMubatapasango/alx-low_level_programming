@@ -41,7 +41,7 @@ if (*line == ' ')
 {
 if (is_arg)
 {
-argv[i][arg_pos] = '\0';
+argw[i][arg_pos] = '\0';
 i++;
 arg_pos = 0;
 is_arg = 0;
@@ -51,7 +51,7 @@ else
 {
 if (!is_arg)
 {
-argw[i] = (char *)malloc((ARGS_ARGS + 1) * sizeof(char));
+argw[i] = (char *)malloc((ARGS_SIZE + 1) * sizeof(char));
 is_arg = 1;
 }
 argw[i][arg_pos++] = *line;
@@ -218,6 +218,7 @@ write(STDERR_FILENO, error, sizeof(error) - 1);
  */
 void execute_cd_command(char **argw, int argd)
 {
+char current_directory[BUFFER_SIZE]; 
 const char *home_variable = "HOME";
 const char *dash_argument = "-";
 char *directory;
@@ -251,7 +252,6 @@ char error[] = "Usage: cd [DIRECTORY|-]\n";
 write(STDERR_FILENO, error, sizeof(error) - 1);
 return;
 }
-char current_directory[BUFFER_SIZE];
 if (getcwd(current_directory, sizeof(current_directory)) == NULL)
 {
 char error[] = "Getcwd error\n";
@@ -286,8 +286,8 @@ return;
 int main(void)
 {
 char line[BUFFER_SIZE];
-char *argW[ARGS_ARGS + 1];
-int argd;
+char *argw[ARGS_SIZE + 1];
+int argd, i;
 while (1)
 {
 char prompt[] = "shell$ ";
@@ -299,7 +299,7 @@ if (argd > 0)
 {
 if (is_exit_command(argw[0]))
 {
-execute_exit_command(argw, argd);
+execute_exit_user_input(argw, argd);
 }
 else if (is_setenv_command(argw[0]))
 {
@@ -318,9 +318,9 @@ else
 execute_command(argw);
 }
 }
-for (int i = 0; i < argc; i++)
+for (i = 0; i < argd; i++)
 {
-free(argv[i]);
+free(argw[i]);
 }
 }
 return (0);

@@ -127,11 +127,11 @@ if (access(input_buffer, X_OK) == -1)
 perror("command does not exist");
 continue;
 }
-if (is_exit_command(input_buffer))
+if (is_exit_input(input_buffer))
 {
 handle_exit();
 }
-if (is_env_command(input_buffer))
+if (is_env_input(input_buffer))
 {
 handle_env();
 continue;
@@ -144,7 +144,7 @@ exit(EXIT_FAILURE);
 }
 else if (child_pid == 0)
 {
-execute_command(input_buffer);
+execute_user_input(input_buffer);
 exit(EXIT_FAILURE);
 }
 else

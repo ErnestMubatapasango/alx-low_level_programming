@@ -6,7 +6,7 @@
 char *read_input_line()
 {
 static char buffer[BUFFER_SIZE];
-static size_t buffer_pos;
+static ssize_t buffer_pos;
 static ssize_t nread;
 char *line = NULL;
 size_t line_pos = 0;
