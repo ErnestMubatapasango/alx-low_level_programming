@@ -18,11 +18,14 @@
 #define ARGS_ALIAS_LENGTH 128
 
 extern char **environ;
-size_t _strlen(char *a);
-int is_setenv_command(const char *command);
-int is_unsetenv_command(const char *command);
-void execute_exit_user_input(char **argw, int argd);
-void execute_setenv_command(char **argw, int argd);
-void execute_unsetenv_command(char **argw, int argd);
+/**
+ *
+ * size_t _strlen(char *a);
+ * int is_setenv_command(const char *command);
+ * int is_unsetenv_command(const char *command);
+ * void execute_exit_user_input(char **argw, int argd);
+ * void execute_setenv_command(char **argw, int argd);
+ * void execute_unsetenv_command(char **argw, int argd);
+ */
 
 #endif
