@@ -53,7 +53,7 @@ exit(EXIT_FAILURE);
 
 while (1)
 {
-if (is_interactive)
+if (is_interactive == 0)
 prompt();
 
 chars = getline(&user__input, &size, stdin);
@@ -68,12 +68,10 @@ if (!args)
 perror("Memory allocation failed");
 exit(EXIT_FAILURE);
 }
-
 args[0] = strtok(user__input, " \n");
 i = 1;
 while (i < 1024  && (args[i] = strtok(NULL, " \n")))
 i++;
-
 pid = fork();
 if (pid == -1)
 {
@@ -92,10 +90,8 @@ else
 {
 wait(NULL);
 }
-
 free(args);
 }
-
 free(user__input);
 return (0);
 }
