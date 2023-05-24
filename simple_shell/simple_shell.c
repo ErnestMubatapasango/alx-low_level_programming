@@ -31,7 +31,7 @@ _read(STDIN_FILENO, buffer, BUFFER_SIZE);
 buffer[_strlen(buffer) - 1] = '\0';
 token = _strtok(buffer, " ");
 
-while (token != NULL)
+while (token != NULL && i < (BUFFER_SIZE / 2 - 1))
 {
 args[i] = token;
 token = _strtok(NULL, " ");
