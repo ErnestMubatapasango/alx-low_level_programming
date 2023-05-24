@@ -17,7 +17,7 @@
 #define ARGS_ALIASES 64
 #define ARGS_ALIAS_LENGTH 128
 
-
+extern char **environ;
 size_t _strlen(char *a);
 int is_setenv_command(const char *command);
 int is_unsetenv_command(const char *command);
