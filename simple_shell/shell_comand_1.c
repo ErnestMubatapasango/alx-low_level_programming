@@ -59,6 +59,7 @@ ssize_t xrd;
 pid_t pid;
 while (1)
 {
+if (isatty(STDIN_FILENO) == 0)
 prompt();
 xrd = read(STDIN_FILENO, user_input,  BUFFER_SIZE);
 if (xrd == -1)
