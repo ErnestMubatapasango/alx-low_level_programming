@@ -44,7 +44,7 @@ char **args;
 int i;
 pid_t pid;
 char *user__input = (char *)malloc(1024 * sizeof(char));
-
+int is_interactive = isatty(STDIN_FILENO);
 if (!user__input)
 {
 perror("Memory allocation failed");
@@ -53,6 +53,7 @@ exit(EXIT_FAILURE);
 
 while (1)
 {
+if (is_interactive)
 prompt();
 
 chars = getline(&user__input, &size, stdin);
