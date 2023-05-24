@@ -44,7 +44,7 @@ char **args;
 int i;
 pid_t pid;
 char *user__input = (char *)malloc(1024 * sizeof(char));
-
+bool from_pipe = false;
 if (!user__input)
 {
 perror("Memory allocation failed");
@@ -53,6 +53,9 @@ exit(EXIT_FAILURE);
 
 while (1)
 {
+if (isatty(STDIN_FILENO) == 0)
+from_pipe = true;
+
 prompt();
 
 chars = getline(&user__input, &size, stdin);
